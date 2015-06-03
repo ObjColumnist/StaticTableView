@@ -113,7 +113,7 @@ public class DataSource {
         return indexForSection
     }
     
-    public func indexPathForRow(aRow: Row)-> NSIndexPath?{
+    public func indexPathForRow(aRow: Row)-> NSIndexPath? {
     
         var indexPathForRow: NSIndexPath?
         
@@ -137,6 +137,30 @@ public class DataSource {
         return indexPathForRow
     }
     
+    public func indexPathForCell(cell: UITableViewCell)-> NSIndexPath? {
+        
+        var indexPathForCell: NSIndexPath?
+        
+        for (sectionIndex, section) in enumerate(sections) {
+            for (rowIndex, row) in enumerate(section.rows) {
+                if cell == row.cell {
+                    indexPathForCell = NSIndexPath(forRow: rowIndex, inSection: sectionIndex)
+                    break
+                }
+                else if let updatedRow = row as? UpdatedRow {
+                    if updatedRow.updateAction == .Insert{
+                        if cell == updatedRow.originalRow.cell {
+                            indexPathForCell = NSIndexPath(forRow: rowIndex, inSection: sectionIndex)
+                            break
+                        }
+                    }
+                }
+            }
+        }
+        
+        return indexPathForCell
+    }
+    
     // MARK: Updates
     
     public func beginUpdates(){
@@ -156,7 +180,7 @@ public class DataSource {
                         let indexPath  = NSIndexPath(forRow: find(rows, row)!, inSection: sectionIndex)
                         let indexPaths = [indexPath]
                         self.tableView?.insertRowsAtIndexPaths(indexPaths, withRowAnimation:row.rowAnimation)
-                        rows[find(rows, row)!] = row.originalRow;
+                        rows[find(rows, row)!] = row.originalRow
                     }
                     else if row.updateAction == .Delete {
                         let indexPath  = NSIndexPath(forRow: find(rows, row)!, inSection: sectionIndex)
@@ -201,18 +225,18 @@ public class DataSource {
     
     // MARK: Insert Sections
     
-    public func insertSection(section: Section, atIndex index: Int, withRowAnimation rowAnimation:UITableViewRowAnimation) {
+    public func insertSection(section: Section, atIndex index: Int, withRowAnimation rowAnimation:UITableViewRowAnimation = .Automatic) {
         let insertedSection = UpdatedSection(originalSection: section, index: index, updateAction: .Insert, rowAnimation: rowAnimation)
         sections.insert(insertedSection, atIndex: index)
     }
     
-    public func insertSection(section: Section, beforeSection: Section, withRowAnimation rowAnimation:UITableViewRowAnimation) {
+    public func insertSection(section: Section, beforeSection: Section, withRowAnimation rowAnimation:UITableViewRowAnimation = .Automatic) {
         if let index = indexForSection(beforeSection) {
             insertSection(section, atIndex: index, withRowAnimation: rowAnimation)
         }
     }
     
-    public func insertSection(section: Section, afterSection: Section, withRowAnimation rowAnimation:UITableViewRowAnimation) {
+    public func insertSection(section: Section, afterSection: Section, withRowAnimation rowAnimation:UITableViewRowAnimation = .Automatic) {
         if let index = indexForSection(afterSection) {
             insertSection(section, atIndex: index + 1, withRowAnimation: rowAnimation)
         }
@@ -220,13 +244,13 @@ public class DataSource {
     
     // MARK: Delete Sections
     
-    public func deleteSectionAtIndex(index: Int, withRowAnimation rowAnimation: UITableViewRowAnimation){
+    public func deleteSectionAtIndex(index: Int, withRowAnimation rowAnimation: UITableViewRowAnimation = .Automatic){
         let section = sectionAtIndex(index)
         let deletedSection = UpdatedSection(originalSection: section, index: index, updateAction: .Insert, rowAnimation: rowAnimation)
         sections[index] = deletedSection
     }
     
-    public func deleteSection(section: Section, withRowAnimation rowAnimation: UITableViewRowAnimation){
+    public func deleteSection(section: Section, withRowAnimation rowAnimation: UITableViewRowAnimation = .Automatic){
         if let index = indexForSection(section) {
             deleteSectionAtIndex(index, withRowAnimation: rowAnimation)
         }
@@ -234,7 +258,7 @@ public class DataSource {
     
     // MARK: Insert Rows
     
-    public func insertRow(row:Row, atIndexPath indexPath:NSIndexPath, withRowAnimation rowAnimation: UITableViewRowAnimation){
+    public func insertRow(row:Row, atIndexPath indexPath:NSIndexPath, withRowAnimation rowAnimation: UITableViewRowAnimation = .Automatic){
         let section = sectionAtIndex(indexPath.section)
         var rows = Array(section.rows)
         
@@ -242,17 +266,17 @@ public class DataSource {
     
         rows.insert(insertedRow, atIndex: indexPath.row)
         
-        section.rows = rows;
+        section.rows = rows
     }
     
-    public func insertRow(row:Row, beforeRow: Row, withRowAnimation rowAnimation: UITableViewRowAnimation) {
+    public func insertRow(row:Row, beforeRow: Row, withRowAnimation rowAnimation: UITableViewRowAnimation = .Automatic) {
         
         if let indexPath = indexPathForRow(row){
             insertRow(row, atIndexPath: indexPath, withRowAnimation: rowAnimation)
         }
     }
     
-    public func insertRow(row:Row, afterRow: Row, withRowAnimation rowAnimation: UITableViewRowAnimation) {
+    public func insertRow(row:Row, afterRow: Row, withRowAnimation rowAnimation: UITableViewRowAnimation = .Automatic) {
         
         if let indexPath = indexPathForRow(afterRow){
             let afterIndexPath = NSIndexPath(forRow: indexPath.row + 1, inSection: indexPath.section)
@@ -262,7 +286,7 @@ public class DataSource {
     
     // MARK: Delete Rows
     
-    public func deleteRowAtIndexPath(indexPath: NSIndexPath, withRowAnimation rowAnimation: UITableViewRowAnimation) {
+    public func deleteRowAtIndexPath(indexPath: NSIndexPath, withRowAnimation rowAnimation: UITableViewRowAnimation = .Automatic) {
         let section = sectionAtIndex(indexPath.section)
         var rows = Array(section.rows)
         let row = rows[indexPath.row]
@@ -271,10 +295,10 @@ public class DataSource {
         
         rows[indexPath.row] = deletedRow
         
-        section.rows = rows;
+        section.rows = rows
     }
     
-    public func deleteRow(row: Row, withRowAnimation rowAnimation: UITableViewRowAnimation) {
+    public func deleteRow(row: Row, withRowAnimation rowAnimation: UITableViewRowAnimation = .Automatic) {
         if let indexPath = indexPathForRow(row){
             deleteRowAtIndexPath(indexPath, withRowAnimation: rowAnimation)
         }
