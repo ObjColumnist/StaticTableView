@@ -8,14 +8,20 @@
 
 import UIKit
 
-public class Node: Equatable {
+public class Node: Equatable, Printable {
     public var object: AnyObject?
     
     public init(){
         
     }
+    
+    public var description: String {
+        get {
+            return "\(self.dynamicType)"
+        }
+    }
 }
 
 public func ==(lhs: Node, rhs: Node) -> Bool {
-    return true
+    return lhs === rhs
 }

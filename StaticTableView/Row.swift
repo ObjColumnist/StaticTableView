@@ -33,3 +33,12 @@ public class Row: Node {
         self.cell = cell
     }
 }
+
+public func ==(lhs: Row, rhs: Row) -> Bool {
+    if let lhsCell = lhs.cell, rhsCell = rhs.cell where lhsCell == rhsCell {
+        return true
+    }
+    else {
+        return lhs === rhs   
+    }
+}

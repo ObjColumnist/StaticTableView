@@ -126,4 +126,10 @@ public class Section: Node {
             return false
         }
     }
+    
+    public override var description: String {
+        get {
+            return "\(self.dynamicType) rows:\(rows)"
+        }
+    }
 }
