@@ -21,6 +21,12 @@ public class Section: Node {
         }
     }
     
+    public var empty: Bool {
+        get {
+            return (numberOfRows == 0)
+        }
+    }
+    
     public subscript(index: Int) -> Row {
         get {
             return rows[index]

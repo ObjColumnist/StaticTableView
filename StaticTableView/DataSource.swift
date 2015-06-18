@@ -53,6 +53,12 @@ public class DataSource {
         }
     }
     
+    public var empty: Bool {
+        get {
+            return (numberOfRows == 0)
+        }
+    }
+    
     public subscript(index: Int) -> Section {
         get {
             return sections[index]
