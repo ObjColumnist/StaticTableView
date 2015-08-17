@@ -105,8 +105,7 @@ public class DataSource {
             if aSection == section{
                 indexForSection = sectionIndex
                 break
-            }
-            else if let updatedSection = section as? UpdatedSection {
+            } else if let updatedSection = section as? UpdatedSection {
                 if updatedSection.updateAction == .Insert{
                     if aSection == updatedSection.originalSection {
                         indexForSection = sectionIndex
@@ -128,8 +127,7 @@ public class DataSource {
                 if aRow == row {
                     indexPathForRow = NSIndexPath(forRow: rowIndex, inSection: sectionIndex)
                     break
-                }
-                else if let updatedRow = row as? UpdatedRow {
+                } else if let updatedRow = row as? UpdatedRow {
                     if updatedRow.updateAction == .Insert{
                         if aRow == updatedRow.originalRow {
                             indexPathForRow = NSIndexPath(forRow: rowIndex, inSection: sectionIndex)
@@ -152,8 +150,7 @@ public class DataSource {
                 if cell == row.cell {
                     indexPathForCell = NSIndexPath(forRow: rowIndex, inSection: sectionIndex)
                     break
-                }
-                else if let updatedRow = row as? UpdatedRow {
+                } else if let updatedRow = row as? UpdatedRow {
                     if updatedRow.updateAction == .Insert{
                         if cell == updatedRow.originalRow.cell {
                             indexPathForCell = NSIndexPath(forRow: rowIndex, inSection: sectionIndex)
@@ -187,8 +184,7 @@ public class DataSource {
                         let indexPaths = [indexPath]
                         self.tableView?.insertRowsAtIndexPaths(indexPaths, withRowAnimation:row.rowAnimation)
                         rows[find(rows, row)!] = row.originalRow
-                    }
-                    else if row.updateAction == .Delete {
+                    } else if row.updateAction == .Delete {
                         let indexPath  = NSIndexPath(forRow: find(rows, row)!, inSection: sectionIndex)
                         let indexPaths = [indexPath]
                         self.tableView?.deleteRowsAtIndexPaths(indexPaths, withRowAnimation:row.rowAnimation)
@@ -204,8 +200,7 @@ public class DataSource {
                 if section.updateAction == .Insert {
                     self.tableView?.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation: section.rowAnimation)
                     sections[sectionIndex] = section.originalSection
-                }
-                else if section.updateAction == .Delete {
+                } else if section.updateAction == .Delete {
                     self.tableView?.deleteSections(NSIndexSet(index: sectionIndex), withRowAnimation: section.rowAnimation)
                     sections.removeAtIndex(sectionIndex)
                 }

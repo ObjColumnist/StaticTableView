@@ -42,11 +42,9 @@ public class ViewController: UITableViewController {
         
         if let dequeueCellHandler = row.dequeueCellHandler {
             return dequeueCellHandler(row, tableView, indexPath)
-        }
-        else if let tableViewCell = row.cell {
+        } else if let tableViewCell = row.cell {
             return tableViewCell
-        }
-        else {
+        } else {
             cell = tableView.dequeueReusableCellWithIdentifier(reusableCellIdentifier, forIndexPath: indexPath) as! UITableViewCell
         }
         
@@ -58,8 +56,7 @@ public class ViewController: UITableViewController {
         
         if let rowHeight = row.height {
             return rowHeight
-        }
-        else {
+        } else {
             return tableView.rowHeight
         }
     }
@@ -107,11 +104,9 @@ public class ViewController: UITableViewController {
         
         if let editActionsHandler = row.editActionsHandler{
             return editActionsHandler(row, tableView, indexPath)
-        }
-        else if let editActions = row.editActions{
+        } else if let editActions = row.editActions{
             return editActions
-        }
-        else {
+        } else {
             return nil
         }
     }

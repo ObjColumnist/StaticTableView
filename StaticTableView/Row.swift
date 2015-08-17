@@ -10,8 +10,10 @@ import UIKit
 
 public class Row: Node {
     public var cell: UITableViewCell?
+    
     public var height: CGFloat?
     public var estimatedHeight: CGFloat?
+
     public var editActions: [UITableViewRowAction]?
     
     public var didSelectHandler: ((Row, UITableView, NSIndexPath) -> Void)?
@@ -37,8 +39,7 @@ public class Row: Node {
 public func ==(lhs: Row, rhs: Row) -> Bool {
     if let lhsCell = lhs.cell, rhsCell = rhs.cell where lhsCell == rhsCell {
         return true
-    }
-    else {
+    } else {
         return lhs === rhs   
     }
 }
