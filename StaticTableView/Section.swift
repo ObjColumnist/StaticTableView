@@ -11,6 +11,9 @@ import UIKit
 public class Section: Node {
     public var rows: [Row] = []
     
+    public var headerHeight: CGFloat?
+    public var footerHeight: CGFloat?
+    
     public var headerTitle: String?
     public var footerTitle: String?
     public var indexTitle: String?
