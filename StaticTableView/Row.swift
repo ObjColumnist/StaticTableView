@@ -21,6 +21,8 @@ public class Row: Node {
     
     public var didTapAccessoryButtonHandler: ((Row, UITableView, NSIndexPath) -> Void)?
     
+    public var heightHandler: ((Row, UITableView, NSIndexPath) -> CGFloat)?
+
     public var editActionsHandler: ((Row, UITableView, NSIndexPath) -> [UITableViewRowAction]?)?
     
     public var dequeueCellHandler: ((Row, UITableView, NSIndexPath) -> UITableViewCell)?

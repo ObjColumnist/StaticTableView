@@ -18,6 +18,9 @@ public class Section: Node {
     public var footerTitle: String?
     public var indexTitle: String?
     
+    public var headerView: UIView?
+    public var footerView: UIView?
+    
     public var numberOfRows: Int {
         get {
            return count(rows)
