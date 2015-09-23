@@ -45,7 +45,7 @@ public class ViewController: UITableViewController {
         } else if let tableViewCell = row.cell {
             return tableViewCell
         } else {
-            cell = tableView.dequeueReusableCellWithIdentifier(reusableCellIdentifier, forIndexPath: indexPath) as! UITableViewCell
+            cell = tableView.dequeueReusableCellWithIdentifier(reusableCellIdentifier, forIndexPath: indexPath) 
         }
         
         return cell
@@ -61,7 +61,7 @@ public class ViewController: UITableViewController {
         }
     }
     
-    public override func sectionIndexTitlesForTableView(tableView: UITableView) -> [AnyObject]! {
+    public override func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]? {
         return dataSource.sectionIndexTitles
     }
     
@@ -99,7 +99,7 @@ public class ViewController: UITableViewController {
         }
     }
     
-    public override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
+    public override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         let row = dataSource.rowAtIndexPath(indexPath)
         
         if let editActionsHandler = row.editActionsHandler{

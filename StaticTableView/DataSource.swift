@@ -15,7 +15,7 @@ public class DataSource {
         
     public var numberOfSections: Int {
         get {
-            return count(sections)
+            return sections.count
         }
     }
     
@@ -43,7 +43,7 @@ public class DataSource {
         get {
             var selectedRows: [Row] = []
             
-            if let selectedIndexPaths = tableView?.indexPathsForSelectedRows() as? [NSIndexPath] {
+            if let selectedIndexPaths = tableView?.indexPathsForSelectedRows {
                 for indexPath in selectedIndexPaths{
                     selectedRows.append(rowAtIndexPath(indexPath))
                 }
@@ -100,7 +100,7 @@ public class DataSource {
     public func indexForSection(aSection: Section) -> Int? {
         var indexForSection: Int?
         
-        for (sectionIndex, section) in enumerate(sections) {
+        for (sectionIndex, section) in sections.enumerate() {
             
             if aSection == section{
                 indexForSection = sectionIndex
@@ -122,8 +122,8 @@ public class DataSource {
     
         var indexPathForRow: NSIndexPath?
         
-        for (sectionIndex, section) in enumerate(sections) {
-            for (rowIndex, row) in enumerate(section.rows) {
+        for (sectionIndex, section) in sections.enumerate() {
+            for (rowIndex, row) in section.rows.enumerate() {
                 if aRow == row {
                     indexPathForRow = NSIndexPath(forRow: rowIndex, inSection: sectionIndex)
                     break
@@ -145,8 +145,8 @@ public class DataSource {
         
         var indexPathForCell: NSIndexPath?
         
-        for (sectionIndex, section) in enumerate(sections) {
-            for (rowIndex, row) in enumerate(section.rows) {
+        for (sectionIndex, section) in sections.enumerate() {
+            for (rowIndex, row) in section.rows.enumerate() {
                 if cell == row.cell {
                     indexPathForCell = NSIndexPath(forRow: rowIndex, inSection: sectionIndex)
                     break
@@ -174,28 +174,28 @@ public class DataSource {
     public func commitUpdates(){
         var sections = self.sections
         
-        for (sectionIndex, section) in enumerate(sections) {
+        for (sectionIndex, section) in sections.enumerate() {
             var rows = section.rows
             
-            for (rowIndex, row) in enumerate(section.rows) {
+            for (_, row) in section.rows.enumerate() {
                 if let row = row as? UpdatedRow {
                     if row.updateAction == .Insert {
-                        let indexPath  = NSIndexPath(forRow: find(rows, row)!, inSection: sectionIndex)
+                        let indexPath  = NSIndexPath(forRow: rows.indexOf(row)!, inSection: sectionIndex)
                         let indexPaths = [indexPath]
                         self.tableView?.insertRowsAtIndexPaths(indexPaths, withRowAnimation:row.rowAnimation)
-                        rows[find(rows, row)!] = row.originalRow
+                        rows[rows.indexOf(row)!] = row.originalRow
                     } else if row.updateAction == .Delete {
-                        let indexPath  = NSIndexPath(forRow: find(rows, row)!, inSection: sectionIndex)
+                        let indexPath  = NSIndexPath(forRow: rows.indexOf(row)!, inSection: sectionIndex)
                         let indexPaths = [indexPath]
                         self.tableView?.deleteRowsAtIndexPaths(indexPaths, withRowAnimation:row.rowAnimation)
-                        rows.removeAtIndex(find(rows, row)!)
+                        rows.removeAtIndex(rows.indexOf(row)!)
                     }
                 }
             }
             section.rows = rows
         }
         
-        for (sectionIndex, section) in enumerate(sections) {
+        for (sectionIndex, section) in sections.enumerate() {
             if let section = section as? UpdatedSection {
                 if section.updateAction == .Insert {
                     self.tableView?.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation: section.rowAnimation)

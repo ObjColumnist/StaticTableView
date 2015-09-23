@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class Node: Equatable, Printable {
+public class Node: Equatable, CustomStringConvertible {
     public var object: AnyObject?
     
     public init(){

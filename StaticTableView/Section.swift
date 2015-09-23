@@ -23,7 +23,7 @@ public class Section: Node {
     
     public var numberOfRows: Int {
         get {
-           return count(rows)
+           return rows.count
         }
     }
     
@@ -88,11 +88,11 @@ public class Section: Node {
     }
     
     public func indexForRow(row: Row) -> Int?{
-        return find(rows, row)
+        return rows.indexOf(row)
     }
     
     public func indexForCell(cell: UITableViewCell) -> Int?{
-        for (index, row) in enumerate(rows){
+        for (index, row) in rows.enumerate(){
             if let rowCell = row.cell {
                 if cell == rowCell {
                     return index
@@ -103,7 +103,7 @@ public class Section: Node {
     }
     
     public func indexForObject(object: AnyObject) -> Int?{
-        for (index, row) in enumerate(rows){
+        for (index, _) in rows.enumerate(){
             if let object = object as? NSObject {
                 for row in rows{
                     if let rowObject = row.object as? NSObject {
@@ -118,11 +118,11 @@ public class Section: Node {
     }
     
     public func containsRow(row: Row) -> Bool{
-        return contains(rows, row)
+        return rows.contains(row)
     }
     
     public func containsCell(cell: UITableViewCell) -> Bool{
-        if let index = indexForCell(cell) {
+        if let _ = indexForCell(cell) {
             return true
         } else {
             return false
@@ -130,7 +130,7 @@ public class Section: Node {
     }
     
     public func containsObject(object: AnyObject) -> Bool{
-        if let index = indexForObject(object) {
+        if let _ = indexForObject(object) {
             return true
         } else {
             return false
