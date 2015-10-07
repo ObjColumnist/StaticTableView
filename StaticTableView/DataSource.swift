@@ -118,7 +118,7 @@ public class DataSource {
         return indexForSection
     }
     
-    public func indexPathForRow(aRow: Row)-> NSIndexPath? {
+    public func indexPathForRow(aRow: Row) -> NSIndexPath? {
     
         var indexPathForRow: NSIndexPath?
         
@@ -141,7 +141,7 @@ public class DataSource {
         return indexPathForRow
     }
     
-    public func indexPathForCell(cell: UITableViewCell)-> NSIndexPath? {
+    public func indexPathForCell(cell: UITableViewCell) -> NSIndexPath? {
         
         var indexPathForCell: NSIndexPath?
         
