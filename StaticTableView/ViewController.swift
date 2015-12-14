@@ -33,31 +33,13 @@ public class ViewController: UITableViewController {
         return dataSource.sections[section].numberOfRows
     }
     
-    // MARK: UITableViewDataSource
-    
-    public override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell{
-        var cell: UITableViewCell!
-        
+    public override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {        
         let row = dataSource.rowAtIndexPath(indexPath)
         
         if let dequeueCellHandler = row.dequeueCellHandler {
             return dequeueCellHandler(row, tableView, indexPath)
-        } else if let tableViewCell = row.cell {
-            return tableViewCell
         } else {
-            cell = tableView.dequeueReusableCellWithIdentifier(reusableCellIdentifier, forIndexPath: indexPath) 
-        }
-        
-        return cell
-    }
-    
-    public override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        let row = dataSource.rowAtIndexPath(indexPath)
-        
-        if let rowHeight = row.height {
-            return rowHeight
-        } else {
-            return tableView.rowHeight
+            return row.cell!
         }
     }
     
@@ -75,10 +57,36 @@ public class ViewController: UITableViewController {
     
     // MARK: - UITableViewDelegate
     
+    public override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if let headerHeight = dataSource.sections[section].headerHeight {
+            return headerHeight
+        } else {
+            return UITableViewAutomaticDimension
+        }
+    }
+    
+    public override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if let footerHeight = dataSource.sections[section].footerHeight {
+            return footerHeight
+        } else {
+            return UITableViewAutomaticDimension
+        }
+    }
+    
+    public override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        let row = dataSource.rowAtIndexPath(indexPath)
+        
+        if let rowHeight = row.height {
+            return rowHeight
+        } else {
+            return tableView.rowHeight
+        }
+    }
+    
     public override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let row = dataSource.rowAtIndexPath(indexPath)
         
-        if let didSelectHandler = row.didSelectHandler{
+        if let didSelectHandler = row.didSelectHandler {
             didSelectHandler(row, tableView, indexPath)
         }
     }
@@ -86,7 +94,7 @@ public class ViewController: UITableViewController {
     public override func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
         let row = dataSource.rowAtIndexPath(indexPath)
         
-        if let didDeselectHandler = row.didDeselectHandler{
+        if let didDeselectHandler = row.didDeselectHandler {
             didDeselectHandler(row, tableView, indexPath)
         }
     }
@@ -94,7 +102,7 @@ public class ViewController: UITableViewController {
     public override func tableView(tableView: UITableView, accessoryButtonTappedForRowWithIndexPath indexPath: NSIndexPath) {
         let row = dataSource.rowAtIndexPath(indexPath)
         
-        if let didTapAccessoryButtonHandler = row.didTapAccessoryButtonHandler{
+        if let didTapAccessoryButtonHandler = row.didTapAccessoryButtonHandler {
             didTapAccessoryButtonHandler(row, tableView, indexPath)
         }
     }
@@ -102,9 +110,9 @@ public class ViewController: UITableViewController {
     public override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         let row = dataSource.rowAtIndexPath(indexPath)
         
-        if let editActionsHandler = row.editActionsHandler{
+        if let editActionsHandler = row.editActionsHandler {
             return editActionsHandler(row, tableView, indexPath)
-        } else if let editActions = row.editActions{
+        } else if let editActions = row.editActions {
             return editActions
         } else {
             return nil

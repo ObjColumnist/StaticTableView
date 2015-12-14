@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		96CF82FF1C1ECBC500C73A71 /* DataSourceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96CF82FE1C1ECBC500C73A71 /* DataSourceProvider.swift */; };
 		96D05D4E1AF2443A00CD3527 /* StaticTableView.h in Headers */ = {isa = PBXBuildFile; fileRef = 96D05D4D1AF2443A00CD3527 /* StaticTableView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		96D05D541AF2443A00CD3527 /* StaticTableView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96D05D481AF2443A00CD3527 /* StaticTableView.framework */; };
 		96D05D5B1AF2443A00CD3527 /* StaticTableViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D05D5A1AF2443A00CD3527 /* StaticTableViewTests.swift */; };
@@ -28,6 +29,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		96CF82FE1C1ECBC500C73A71 /* DataSourceProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSourceProvider.swift; sourceTree = "<group>"; };
 		96D05D481AF2443A00CD3527 /* StaticTableView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = StaticTableView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		96D05D4C1AF2443A00CD3527 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		96D05D4D1AF2443A00CD3527 /* StaticTableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StaticTableView.h; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 				96D05D661AF2446100CD3527 /* Row.swift */,
 				96D05D671AF2446100CD3527 /* Section.swift */,
 				96D05D731AF275FC00CD3527 /* ViewController.swift */,
+				96CF82FE1C1ECBC500C73A71 /* DataSourceProvider.swift */,
 				96D05D4B1AF2443A00CD3527 /* Supporting Files */,
 			);
 			path = StaticTableView;
@@ -229,6 +232,7 @@
 				96D05D741AF275FC00CD3527 /* ViewController.swift in Sources */,
 				96D05D681AF2446100CD3527 /* DataSource.swift in Sources */,
 				96D05D6B1AF2446100CD3527 /* Section.swift in Sources */,
+				96CF82FF1C1ECBC500C73A71 /* DataSourceProvider.swift in Sources */,
 				96D05D6A1AF2446100CD3527 /* Row.swift in Sources */,
 				96D05D691AF2446100CD3527 /* Node.swift in Sources */,
 			);
