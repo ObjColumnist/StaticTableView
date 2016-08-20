@@ -8,24 +8,24 @@
 
 import UIKit
 
-public class DataSource {
-    public var sections: [Section] = []
-    public var tableView: UITableView?
-    public var allowsEmptySections: Bool = false
+open class DataSource {
+    open var sections: [Section] = []
+    open var tableView: UITableView?
+    open var allowsEmptySections: Bool = false
         
-    public var numberOfSections: Int {
+    open var numberOfSections: Int {
         get {
             return sections.count
         }
     }
     
-    public var numberOfRows: Int {
+    open var numberOfRows: Int {
         get {
-            return sections.reduce(0, combine: {$0 + $1.numberOfRows})
+            return sections.reduce(0, {$0 + $1.numberOfRows})
         }
     }
     
-    public var sectionIndexTitles: [String] {
+    open var sectionIndexTitles: [String] {
         get {
             var sectionIndexTitles: [String] = []
             
@@ -39,13 +39,13 @@ public class DataSource {
         }
     }
     
-    public var selectedRows: [Row] {
+    open var selectedRows: [Row] {
         get {
             var selectedRows: [Row] = []
             
             if let selectedIndexPaths = tableView?.indexPathsForSelectedRows {
-                for indexPath in selectedIndexPaths{
-                    selectedRows.append(rowAtIndexPath(indexPath))
+                for indexPath in selectedIndexPaths {
+                    selectedRows.append(row(at: indexPath))
                 }
             }
             
@@ -53,13 +53,13 @@ public class DataSource {
         }
     }
     
-    public var empty: Bool {
+    open var isEmpty: Bool {
         get {
             return (numberOfRows == 0)
         }
     }
     
-    public subscript(index: Int) -> Section {
+    open subscript(index: Int) -> Section {
         get {
             return sections[index]
         }
@@ -68,45 +68,45 @@ public class DataSource {
         }
     }
     
-    public subscript(indexPath: NSIndexPath) -> Row {
+    open subscript(indexPath: IndexPath) -> Row {
         get {
-            return sections[indexPath.section].rows[indexPath.row]
+            return sections[(indexPath as NSIndexPath).section].rows[(indexPath as NSIndexPath).row]
         }
         set(newValue) {
-            sections[indexPath.section].rows[indexPath.row] = newValue
+            sections[(indexPath as NSIndexPath).section].rows[(indexPath as NSIndexPath).row] = newValue
         }
     }
     
-    public init(){
+    public init() {
         
     }
     
-    public func sectionAtIndex(index: Int) -> Section {
+    open func section(at index: Int) -> Section {
         return sections[index]
     }
     
-    public func rowAtIndexPath(indexPath: NSIndexPath) -> Row {
-        return sections[indexPath.section].rows[indexPath.row]
+    open func row(at indexPath: IndexPath) -> Row {
+        return sections[(indexPath as NSIndexPath).section].rows[(indexPath as NSIndexPath).row]
     }
     
-    public func cellAtIndexPath(indexPath: NSIndexPath) -> UITableViewCell? {
-        return sections[indexPath.section].rows[indexPath.row].cell
+    open func cell(at indexPath: IndexPath) -> UITableViewCell? {
+        return sections[(indexPath as NSIndexPath).section].rows[(indexPath as NSIndexPath).row].cell
     }
     
-    public func objectAtIndexPath(indexPath: NSIndexPath) -> AnyObject? {
-        return sections[indexPath.section].rows[indexPath.row].object
+    open func object(at indexPath: IndexPath) -> AnyObject? {
+        return sections[(indexPath as NSIndexPath).section].rows[(indexPath as NSIndexPath).row].object
     }
         
-    public func indexForSection(aSection: Section) -> Int? {
+    open func index(for aSection: Section) -> Int? {
         var indexForSection: Int?
         
-        for (sectionIndex, section) in sections.enumerate() {
+        for (sectionIndex, section) in sections.enumerated() {
             
             if aSection == section{
                 indexForSection = sectionIndex
                 break
             } else if let updatedSection = section as? UpdatedSection {
-                if updatedSection.updateAction == .Insert{
+                if updatedSection.updateAction == .insert{
                     if aSection == updatedSection.originalSection {
                         indexForSection = sectionIndex
                         break
@@ -118,19 +118,19 @@ public class DataSource {
         return indexForSection
     }
     
-    public func indexPathForRow(aRow: Row) -> NSIndexPath? {
+    open func indexPath(for aRow: Row) -> IndexPath? {
     
-        var indexPathForRow: NSIndexPath?
+        var indexPathForRow: IndexPath?
         
-        for (sectionIndex, section) in sections.enumerate() {
-            for (rowIndex, row) in section.rows.enumerate() {
+        for (sectionIndex, section) in sections.enumerated() {
+            for (rowIndex, row) in section.rows.enumerated() {
                 if aRow == row {
-                    indexPathForRow = NSIndexPath(forRow: rowIndex, inSection: sectionIndex)
+                    indexPathForRow = IndexPath(row: rowIndex, section: sectionIndex)
                     break
                 } else if let updatedRow = row as? UpdatedRow {
-                    if updatedRow.updateAction == .Insert{
+                    if updatedRow.updateAction == .insert{
                         if aRow == updatedRow.originalRow {
-                            indexPathForRow = NSIndexPath(forRow: rowIndex, inSection: sectionIndex)
+                            indexPathForRow = IndexPath(row: rowIndex, section: sectionIndex)
                             break
                         }
                     }
@@ -141,19 +141,19 @@ public class DataSource {
         return indexPathForRow
     }
     
-    public func indexPathForCell(cell: UITableViewCell) -> NSIndexPath? {
+    open func indexPath(for cell: UITableViewCell) -> IndexPath? {
         
-        var indexPathForCell: NSIndexPath?
+        var indexPathForCell: IndexPath?
         
-        for (sectionIndex, section) in sections.enumerate() {
-            for (rowIndex, row) in section.rows.enumerate() {
+        for (sectionIndex, section) in sections.enumerated() {
+            for (rowIndex, row) in section.rows.enumerated() {
                 if cell == row.cell {
-                    indexPathForCell = NSIndexPath(forRow: rowIndex, inSection: sectionIndex)
+                    indexPathForCell = IndexPath(row: rowIndex, section: sectionIndex)
                     break
                 } else if let updatedRow = row as? UpdatedRow {
-                    if updatedRow.updateAction == .Insert{
+                    if updatedRow.updateAction == .insert{
                         if cell == updatedRow.originalRow.cell {
-                            indexPathForCell = NSIndexPath(forRow: rowIndex, inSection: sectionIndex)
+                            indexPathForCell = IndexPath(row: rowIndex, section: sectionIndex)
                             break
                         }
                     }
@@ -166,43 +166,43 @@ public class DataSource {
     
     // MARK: Updates
     
-    public func beginUpdates(){
+    open func beginUpdates() {
         CATransaction.begin()
         tableView?.beginUpdates()
     }
     
-    public func commitUpdates(){
+    open func commitUpdates() {
         var sections = self.sections
         
-        for (sectionIndex, section) in sections.enumerate() {
+        for (sectionIndex, section) in sections.enumerated() {
             var rows = section.rows
             
-            for (_, row) in section.rows.enumerate() {
+            for (_, row) in section.rows.enumerated() {
                 if let row = row as? UpdatedRow {
-                    if row.updateAction == .Insert {
-                        let indexPath  = NSIndexPath(forRow: rows.indexOf(row)!, inSection: sectionIndex)
+                    if row.updateAction == .insert {
+                        let indexPath  = IndexPath(row: rows.index(of: row)!, section: sectionIndex)
                         let indexPaths = [indexPath]
-                        self.tableView?.insertRowsAtIndexPaths(indexPaths, withRowAnimation:row.rowAnimation)
-                        rows[rows.indexOf(row)!] = row.originalRow
-                    } else if row.updateAction == .Delete {
-                        let indexPath  = NSIndexPath(forRow: rows.indexOf(row)!, inSection: sectionIndex)
+                        self.tableView?.insertRows(at: indexPaths, with:row.rowAnimation)
+                        rows[rows.index(of: row)!] = row.originalRow
+                    } else if row.updateAction == .delete {
+                        let indexPath  = IndexPath(row: rows.index(of: row)!, section: sectionIndex)
                         let indexPaths = [indexPath]
-                        self.tableView?.deleteRowsAtIndexPaths(indexPaths, withRowAnimation:row.rowAnimation)
-                        rows.removeAtIndex(rows.indexOf(row)!)
+                        self.tableView?.deleteRows(at: indexPaths, with:row.rowAnimation)
+                        rows.remove(at: rows.index(of: row)!)
                     }
                 }
             }
             section.rows = rows
         }
         
-        for (sectionIndex, section) in sections.enumerate() {
+        for (sectionIndex, section) in sections.enumerated() {
             if let section = section as? UpdatedSection {
-                if section.updateAction == .Insert {
-                    self.tableView?.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation: section.rowAnimation)
+                if section.updateAction == .insert {
+                    self.tableView?.insertSections(IndexSet(integer: sectionIndex), with: section.rowAnimation)
                     sections[sectionIndex] = section.originalSection
-                } else if section.updateAction == .Delete {
-                    self.tableView?.deleteSections(NSIndexSet(index: sectionIndex), withRowAnimation: section.rowAnimation)
-                    sections.removeAtIndex(sectionIndex)
+                } else if section.updateAction == .delete {
+                    self.tableView?.deleteSections(IndexSet(integer: sectionIndex), with: section.rowAnimation)
+                    sections.remove(at: sectionIndex)
                 }
             }
         }
@@ -210,7 +210,7 @@ public class DataSource {
         self.sections = sections
     }
     
-    public func endUpdatesWithCompletionHandler(completionHandler: (() -> (Void))?){
+    open func endUpdatesWithCompletionHandler(_ completionHandler: (() -> (Void))?) {
         CATransaction.setCompletionBlock { () -> Void in
             if let completionHandler = completionHandler {
                 completionHandler()
@@ -226,89 +226,89 @@ public class DataSource {
     
     // MARK: Insert Sections
     
-    public func insertSection(section: Section, atIndex index: Int, withRowAnimation rowAnimation:UITableViewRowAnimation = .Automatic) {
-        let insertedSection = UpdatedSection(originalSection: section, index: index, updateAction: .Insert, rowAnimation: rowAnimation)
-        sections.insert(insertedSection, atIndex: index)
+    open func insert(_ section: Section, at index: Int, with rowAnimation: UITableViewRowAnimation = .automatic) {
+        let insertedSection = UpdatedSection(originalSection: section, index: index, updateAction: .insert, rowAnimation: rowAnimation)
+        sections.insert(insertedSection, at: index)
     }
     
-    public func insertSection(section: Section, beforeSection: Section, withRowAnimation rowAnimation:UITableViewRowAnimation = .Automatic) {
-        if let index = indexForSection(beforeSection) {
-            insertSection(section, atIndex: index, withRowAnimation: rowAnimation)
+    open func insert(_ section: Section, before beforeSection: Section, with rowAnimation: UITableViewRowAnimation = .automatic) {
+        if let index = index(for: beforeSection) {
+            insert(section, at: index, with: rowAnimation)
         }
     }
     
-    public func insertSection(section: Section, afterSection: Section, withRowAnimation rowAnimation:UITableViewRowAnimation = .Automatic) {
-        if let index = indexForSection(afterSection) {
-            insertSection(section, atIndex: index + 1, withRowAnimation: rowAnimation)
+    open func insert(_ section: Section, after afterSection: Section, with rowAnimation: UITableViewRowAnimation = .automatic) {
+        if let index = index(for: afterSection) {
+            insert(section, at: index + 1, with: rowAnimation)
         }
     }
     
     // MARK: Delete Sections
     
-    public func deleteSectionAtIndex(index: Int, withRowAnimation rowAnimation: UITableViewRowAnimation = .Automatic){
-        let section = sectionAtIndex(index)
-        let deletedSection = UpdatedSection(originalSection: section, index: index, updateAction: .Insert, rowAnimation: rowAnimation)
+    open func deleteSection(at index: Int, with rowAnimation: UITableViewRowAnimation = .automatic) {
+        let section = self.section(at: index)
+        let deletedSection = UpdatedSection(originalSection: section, index: index, updateAction: .insert, rowAnimation: rowAnimation)
         sections[index] = deletedSection
     }
     
-    public func deleteSection(section: Section, withRowAnimation rowAnimation: UITableViewRowAnimation = .Automatic){
-        if let index = indexForSection(section) {
-            deleteSectionAtIndex(index, withRowAnimation: rowAnimation)
+    open func delete(_ section: Section, with rowAnimation: UITableViewRowAnimation = .automatic) {
+        if let index = index(for: section) {
+            deleteSection(at: index, with: rowAnimation)
         }
     }
     
     // MARK: Insert Rows
     
-    public func insertRow(row:Row, atIndexPath indexPath:NSIndexPath, withRowAnimation rowAnimation: UITableViewRowAnimation = .Automatic){
-        let section = sectionAtIndex(indexPath.section)
+    open func insert(_ row: Row, at indexPath:IndexPath, with rowAnimation: UITableViewRowAnimation = .automatic) {
+        let section = self.section(at: (indexPath as NSIndexPath).section)
         var rows = Array(section.rows)
         
-        let insertedRow = UpdatedRow(originalRow: row, indexPath: indexPath, updateAction: .Insert, rowAnimation: rowAnimation)
+        let insertedRow = UpdatedRow(originalRow: row, indexPath: indexPath, updateAction: .insert, rowAnimation: rowAnimation)
     
-        rows.insert(insertedRow, atIndex: indexPath.row)
+        rows.insert(insertedRow, at: (indexPath as NSIndexPath).row)
         
         section.rows = rows
     }
     
-    public func insertRow(row:Row, beforeRow: Row, withRowAnimation rowAnimation: UITableViewRowAnimation = .Automatic) {
+    open func insert(_ row: Row, before beforeRow: Row, with rowAnimation: UITableViewRowAnimation = .automatic) {
         
-        if let indexPath = indexPathForRow(row){
-            insertRow(row, atIndexPath: indexPath, withRowAnimation: rowAnimation)
+        if let indexPath = indexPath(for: row) {
+            insert(row, at: indexPath, with: rowAnimation)
         }
     }
     
-    public func insertRow(row:Row, afterRow: Row, withRowAnimation rowAnimation: UITableViewRowAnimation = .Automatic) {
+    open func insertRow(_ row: Row, after afterRow: Row, with rowAnimation: UITableViewRowAnimation = .automatic) {
         
-        if let indexPath = indexPathForRow(afterRow){
-            let afterIndexPath = NSIndexPath(forRow: indexPath.row + 1, inSection: indexPath.section)
-            insertRow(row, atIndexPath: afterIndexPath, withRowAnimation: rowAnimation)
+        if let indexPath = indexPath(for: afterRow) {
+            let afterIndexPath = IndexPath(row: (indexPath as NSIndexPath).row + 1, section: (indexPath as NSIndexPath).section)
+            insert(row, at: afterIndexPath, with: rowAnimation)
         }
     }
     
     // MARK: Delete Rows
     
-    public func deleteRowAtIndexPath(indexPath: NSIndexPath, withRowAnimation rowAnimation: UITableViewRowAnimation = .Automatic) {
-        let section = sectionAtIndex(indexPath.section)
+    open func deleteRow(at indexPath: IndexPath, with rowAnimation: UITableViewRowAnimation = .automatic) {
+        let section = self.section(at: (indexPath as NSIndexPath).section)
         var rows = Array(section.rows)
-        let row = rows[indexPath.row]
+        let row = rows[(indexPath as NSIndexPath).row]
         
-        let deletedRow = UpdatedRow(originalRow: row, indexPath: indexPath, updateAction: .Delete, rowAnimation: rowAnimation)
+        let deletedRow = UpdatedRow(originalRow: row, indexPath: indexPath, updateAction: .delete, rowAnimation: rowAnimation)
         
-        rows[indexPath.row] = deletedRow
+        rows[(indexPath as NSIndexPath).row] = deletedRow
         
         section.rows = rows
     }
     
-    public func deleteRow(row: Row, withRowAnimation rowAnimation: UITableViewRowAnimation = .Automatic) {
-        if let indexPath = indexPathForRow(row){
-            deleteRowAtIndexPath(indexPath, withRowAnimation: rowAnimation)
+    open func delete(_ row: Row, with rowAnimation: UITableViewRowAnimation = .automatic) {
+        if let indexPath = indexPath(for: row) {
+            deleteRow(at: indexPath, with: rowAnimation)
         }
     }
 }
 
 private enum DataSourceUpdateAction {
-    case Insert
-    case Delete
+    case insert
+    case delete
 }
 
 private class UpdatedSection: Section {
@@ -328,11 +328,11 @@ private class UpdatedSection: Section {
 
 private class UpdatedRow: Row {
     var originalRow: Row
-    var indexPath: NSIndexPath
+    var indexPath: IndexPath
     var updateAction: DataSourceUpdateAction
     var rowAnimation: UITableViewRowAnimation
     
-    init(originalRow: Row, indexPath: NSIndexPath, updateAction: DataSourceUpdateAction, rowAnimation: UITableViewRowAnimation) {
+    init(originalRow: Row, indexPath: IndexPath, updateAction: DataSourceUpdateAction, rowAnimation: UITableViewRowAnimation) {
         self.originalRow = originalRow
         self.indexPath = indexPath
         self.updateAction = updateAction

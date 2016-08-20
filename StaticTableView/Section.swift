@@ -8,32 +8,32 @@
 
 import UIKit
 
-public class Section: Node {
-    public var rows: [Row] = []
+open class Section: Node {
+    open var rows: [Row] = []
     
-    public var headerHeight: CGFloat?
-    public var footerHeight: CGFloat?
+    open var headerHeight: CGFloat?
+    open var footerHeight: CGFloat?
     
-    public var headerTitle: String?
-    public var footerTitle: String?
-    public var indexTitle: String?
+    open var headerTitle: String?
+    open var footerTitle: String?
+    open var indexTitle: String?
     
-    public var headerView: UIView?
-    public var footerView: UIView?
+    open var headerView: UIView?
+    open var footerView: UIView?
     
-    public var numberOfRows: Int {
+    open var numberOfRows: Int {
         get {
            return rows.count
         }
     }
     
-    public var empty: Bool {
+    open var isEmpty: Bool {
         get {
             return (numberOfRows == 0)
         }
     }
     
-    public subscript(index: Int) -> Row {
+    open subscript(index: Int) -> Row {
         get {
             return rows[index]
         }
@@ -42,57 +42,57 @@ public class Section: Node {
         }
     }
     
-    public convenience init(rows: [Row]){
+    public convenience init(rows: [Row]) {
         self.init()
         self.rows = rows
     }
     
-    public convenience init(objects: [AnyObject]){
+    public convenience init(objects: [AnyObject]) {
         self.init()
         self.rows = objects.map({ Row(object: $0) })
     }
     
-    public convenience init(cells: [UITableViewCell]){
+    public convenience init(cells: [UITableViewCell]) {
         self.init()
         self.rows = cells.map({ Row(cell: $0) })
     }
     
-    public func addRow(row: Row){
+    open func add(_ row: Row) {
         rows.append(row)
     }
     
-    public func addCell(cell: UITableViewCell){
+    open func add(_ cell: UITableViewCell) {
         rows.append(Row(cell: cell))
     }
     
-    public func addObject(object: AnyObject){
+    open func add(_ object: AnyObject) {
         rows.append(Row(object: object))
     }
     
-    public func removeRow(row: Row){
-        if let index = indexForRow(row){
-            rows.removeAtIndex(index)
+    open func remove(_ row: Row) {
+        if let index = index(for: row) {
+            rows.remove(at: index)
         }
     }
     
-    public func removeCell(cell: UITableViewCell){
-        if let index = indexForCell(cell){
-            rows.removeAtIndex(index)
+    open func remove(_ cell: UITableViewCell) {
+        if let index = index(for: cell) {
+            rows.remove(at: index)
         }
     }
     
-    public func removeObject(object: AnyObject){
-        if let index = indexForObject(object){
-            rows.removeAtIndex(index)
+    open func remove(_ object: AnyObject) {
+        if let index = index(for: object) {
+            rows.remove(at: index)
         }
     }
     
-    public func indexForRow(row: Row) -> Int?{
-        return rows.indexOf(row)
+    open func index(for row: Row) -> Int? {
+        return rows.index(of: row)
     }
     
-    public func indexForCell(cell: UITableViewCell) -> Int?{
-        for (index, row) in rows.enumerate(){
+    open func index(for cell: UITableViewCell) -> Int? {
+        for (index, row) in rows.enumerated() {
             if let rowCell = row.cell {
                 if cell == rowCell {
                     return index
@@ -102,10 +102,10 @@ public class Section: Node {
         return nil
     }
     
-    public func indexForObject(object: AnyObject) -> Int?{
-        for (index, _) in rows.enumerate(){
+    open func index(for object: AnyObject) -> Int? {
+        for (index, _) in rows.enumerated() {
             if let object = object as? NSObject {
-                for row in rows{
+                for row in rows {
                     if let rowObject = row.object as? NSObject {
                         if object == rowObject {
                             return index
@@ -117,29 +117,29 @@ public class Section: Node {
         return nil
     }
     
-    public func containsRow(row: Row) -> Bool{
+    open func contains(_ row: Row) -> Bool {
         return rows.contains(row)
     }
     
-    public func containsCell(cell: UITableViewCell) -> Bool{
-        if let _ = indexForCell(cell) {
+    open func contains(_ cell: UITableViewCell) -> Bool {
+        if let _ = index(for: cell) {
             return true
         } else {
             return false
         }
     }
     
-    public func containsObject(object: AnyObject) -> Bool{
-        if let _ = indexForObject(object) {
+    open func contains(_ object: AnyObject) -> Bool {
+        if let _ = index(for: object) {
             return true
         } else {
             return false
         }
     }
     
-    public override var description: String {
+    open override var description: String {
         get {
-            return "\(self.dynamicType) rows:\(rows)"
+            return "\(type(of: self)) rows:\(rows)"
         }
     }
 }

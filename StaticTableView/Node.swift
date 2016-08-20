@@ -8,16 +8,16 @@
 
 import UIKit
 
-public class Node: Equatable, CustomStringConvertible {
-    public var object: AnyObject?
+open class Node: Equatable, CustomStringConvertible {
+    open var object: AnyObject?
     
-    public init(){
+    public init() {
         
     }
     
-    public var description: String {
+    open var description: String {
         get {
-            return "\(self.dynamicType)"
+            return "\(type(of: self))"
         }
     }
 }

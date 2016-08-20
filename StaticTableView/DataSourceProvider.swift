@@ -9,23 +9,22 @@
 import UIKit
 
 public protocol DataSourceProvider: UITableViewDataSource, UITableViewDelegate {
-    func dataSourceForTableView(tableView: UITableView) -> DataSource
+    func dataSource(for tableView: UITableView) -> DataSource
 }
 
 public extension DataSourceProvider {
     // MARK: - UITableViewDataSource
     
-    public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return dataSourceForTableView(tableView).numberOfSections
+    public func numberOfSections(in tableView: UITableView) -> Int {
+        return dataSource(for: tableView).numberOfSections
     }
     
-    public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dataSourceForTableView(tableView).sections[section].numberOfRows
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return dataSource(for: tableView).sections[section].numberOfRows
     }
     
-    public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
-        let row = dataSourceForTableView(tableView).rowAtIndexPath(indexPath)
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let row = dataSource(for: tableView).row(at: indexPath)
         
         if let dequeueCellHandler = row.dequeueCellHandler {
             return dequeueCellHandler(row, tableView, indexPath)
@@ -34,38 +33,38 @@ public extension DataSourceProvider {
         }
     }
     
-    public func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]? {
-        return dataSourceForTableView(tableView).sectionIndexTitles
+    public func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+        return dataSource(for: tableView).sectionIndexTitles
     }
     
-    public func tableView(tableView: UITableView, titleForHeaderInSection index: Int) -> String? {
-        return dataSourceForTableView(tableView).sections[index].headerTitle
+    public func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return dataSource(for: tableView).sections[section].headerTitle
     }
     
-    public func tableView(tableView: UITableView, titleForFooterInSection index: Int) -> String? {
-        return dataSourceForTableView(tableView).sections[index].footerTitle
+    public func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        return dataSource(for: tableView).sections[section].footerTitle
     }
     
     // MARK: - UITableViewDelegate
     
-    public func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if let headerHeight = dataSourceForTableView(tableView).sections[section].headerHeight {
+    public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if let headerHeight = dataSource(for: tableView).sections[section].headerHeight {
             return headerHeight
         } else {
             return UITableViewAutomaticDimension
         }
     }
     
-    public func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if let footerHeight = dataSourceForTableView(tableView).sections[section].footerHeight {
+    public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if let footerHeight = dataSource(for: tableView).sections[section].footerHeight {
             return footerHeight
         } else {
             return UITableViewAutomaticDimension
         }
     }
     
-    public func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        let row = dataSourceForTableView(tableView).rowAtIndexPath(indexPath)
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let row = dataSource(for: tableView).row(at: indexPath)
         
         if let rowHeight = row.height {
             return rowHeight
@@ -74,32 +73,32 @@ public extension DataSourceProvider {
         }
     }
     
-    public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let row = dataSourceForTableView(tableView).rowAtIndexPath(indexPath)
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let row = dataSource(for: tableView).row(at: indexPath)
         
         if let didSelectHandler = row.didSelectHandler {
             didSelectHandler(row, tableView, indexPath)
         }
     }
     
-    public func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
-        let row = dataSourceForTableView(tableView).rowAtIndexPath(indexPath)
+    public func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        let row = dataSource(for: tableView).row(at: indexPath)
         
         if let didDeselectHandler = row.didDeselectHandler {
             didDeselectHandler(row, tableView, indexPath)
         }
     }
     
-    public func tableView(tableView: UITableView, accessoryButtonTappedForRowWithIndexPath indexPath: NSIndexPath) {
-        let row = dataSourceForTableView(tableView).rowAtIndexPath(indexPath)
+    public func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
+        let row = dataSource(for: tableView).row(at: indexPath)
         
         if let didTapAccessoryButtonHandler = row.didTapAccessoryButtonHandler {
             didTapAccessoryButtonHandler(row, tableView, indexPath)
         }
     }
     
-    public func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-        let row = dataSourceForTableView(tableView).rowAtIndexPath(indexPath)
+    public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let row = dataSource(for: tableView).row(at: indexPath)
         
         if let editActionsHandler = row.editActionsHandler {
             return editActionsHandler(row, tableView, indexPath)

@@ -8,38 +8,38 @@
 
 import UIKit
 
-public class Row: Node {
-    public var cell: UITableViewCell?
+open class Row: Node {
+    open var cell: UITableViewCell?
     
-    public var height: CGFloat?
-    public var estimatedHeight: CGFloat?
+    open var height: CGFloat?
+    open var estimatedHeight: CGFloat?
 
-    public var editActions: [UITableViewRowAction]?
+    open var editActions: [UITableViewRowAction]?
     
-    public var didSelectHandler: ((Row, UITableView, NSIndexPath) -> Void)?
-    public var didDeselectHandler: ((Row, UITableView, NSIndexPath) -> Void)?
+    open var didSelectHandler: ((Row, UITableView, IndexPath) -> Void)?
+    open var didDeselectHandler: ((Row, UITableView, IndexPath) -> Void)?
     
-    public var didTapAccessoryButtonHandler: ((Row, UITableView, NSIndexPath) -> Void)?
+    open var didTapAccessoryButtonHandler: ((Row, UITableView, IndexPath) -> Void)?
     
-    public var heightHandler: ((Row, UITableView, NSIndexPath) -> CGFloat)?
+    open var heightHandler: ((Row, UITableView, IndexPath) -> CGFloat)?
 
-    public var editActionsHandler: ((Row, UITableView, NSIndexPath) -> [UITableViewRowAction]?)?
+    open var editActionsHandler: ((Row, UITableView, IndexPath) -> [UITableViewRowAction]?)?
     
-    public var dequeueCellHandler: ((Row, UITableView, NSIndexPath) -> UITableViewCell)?
+    open var dequeueCellHandler: ((Row, UITableView, IndexPath) -> UITableViewCell)?
     
-    public convenience init(object: AnyObject?){
+    public convenience init(object: AnyObject?) {
         self.init()
         self.object = object
     }
     
-    public convenience init(cell: UITableViewCell){
+    public convenience init(cell: UITableViewCell) {
         self.init()
         self.cell = cell
     }
 }
 
 public func ==(lhs: Row, rhs: Row) -> Bool {
-    if let lhsCell = lhs.cell, rhsCell = rhs.cell where lhsCell == rhsCell {
+    if let lhsCell = lhs.cell, let rhsCell = rhs.cell , lhsCell == rhsCell {
         return true
     } else {
         return lhs === rhs   

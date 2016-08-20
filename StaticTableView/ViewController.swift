@@ -8,33 +8,33 @@
 
 import UIKit
 
-public class ViewController: UITableViewController {
+open class ViewController: UITableViewController {
     
-    public let dataSource = DataSource()
-    public var reusableCellIdentifier: String = "Identifier"
+    open let dataSource = DataSource()
+    open var reusableCellIdentifier: String = "Identifier"
     
-    public override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
         dataSource.tableView = tableView
         reloadDataSource()
     }
     
-    public func reloadDataSource() {
+    open func reloadDataSource() {
         
     }
 
     // MARK: - UITableViewDataSource
     
-    public override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    open override func numberOfSections(in tableView: UITableView) -> Int {
         return dataSource.numberOfSections
     }
     
-    public override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    open override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return dataSource.sections[section].numberOfRows
     }
     
-    public override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {        
-        let row = dataSource.rowAtIndexPath(indexPath)
+    open override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {        
+        let row = dataSource.row(at: indexPath)
         
         if let dequeueCellHandler = row.dequeueCellHandler {
             return dequeueCellHandler(row, tableView, indexPath)
@@ -43,21 +43,21 @@ public class ViewController: UITableViewController {
         }
     }
     
-    public override func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]? {
+    open override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
         return dataSource.sectionIndexTitles
     }
     
-    public override func tableView(tableView: UITableView, titleForHeaderInSection index: Int) -> String? {
+    open override func tableView(_ tableView: UITableView, titleForHeaderInSection index: Int) -> String? {
         return dataSource.sections[index].headerTitle
     }
     
-    public override func tableView(tableView: UITableView, titleForFooterInSection index: Int) -> String? {
+    open override func tableView(_ tableView: UITableView, titleForFooterInSection index: Int) -> String? {
         return dataSource.sections[index].footerTitle
     }
     
     // MARK: - UITableViewDelegate
     
-    public override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    open override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if let headerHeight = dataSource.sections[section].headerHeight {
             return headerHeight
         } else {
@@ -65,7 +65,7 @@ public class ViewController: UITableViewController {
         }
     }
     
-    public override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    open override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         if let footerHeight = dataSource.sections[section].footerHeight {
             return footerHeight
         } else {
@@ -73,8 +73,8 @@ public class ViewController: UITableViewController {
         }
     }
     
-    public override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        let row = dataSource.rowAtIndexPath(indexPath)
+    open override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let row = dataSource.row(at: indexPath)
         
         if let rowHeight = row.height {
             return rowHeight
@@ -83,32 +83,32 @@ public class ViewController: UITableViewController {
         }
     }
     
-    public override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let row = dataSource.rowAtIndexPath(indexPath)
+    open override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let row = dataSource.row(at: indexPath)
         
         if let didSelectHandler = row.didSelectHandler {
             didSelectHandler(row, tableView, indexPath)
         }
     }
     
-    public override func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
-        let row = dataSource.rowAtIndexPath(indexPath)
+    open override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        let row = dataSource.row(at: indexPath)
         
         if let didDeselectHandler = row.didDeselectHandler {
             didDeselectHandler(row, tableView, indexPath)
         }
     }
     
-    public override func tableView(tableView: UITableView, accessoryButtonTappedForRowWithIndexPath indexPath: NSIndexPath) {
-        let row = dataSource.rowAtIndexPath(indexPath)
+    open override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
+        let row = dataSource.row(at: indexPath)
         
         if let didTapAccessoryButtonHandler = row.didTapAccessoryButtonHandler {
             didTapAccessoryButtonHandler(row, tableView, indexPath)
         }
     }
     
-    public override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-        let row = dataSource.rowAtIndexPath(indexPath)
+    open override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let row = dataSource.row(at: indexPath)
         
         if let editActionsHandler = row.editActionsHandler {
             return editActionsHandler(row, tableView, indexPath)

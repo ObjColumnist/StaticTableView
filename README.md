@@ -18,7 +18,7 @@ Then setting up your Static Table View in `viewDidLoad`:
 let buttonRow = StaticTableView.Row()
 
 buttonRow.dequeueCellHandler = {(row, tableView, indexPath) -> UITableViewCell in
-    let tableViewCell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: nil)
+    let tableViewCell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: nil)
     tableViewCell.textLabel?.text = "Press Me"
     return tableViewCell
 }
@@ -35,16 +35,16 @@ dataSource.sections = [buttonSection]
 Then simply set up your `UITableViewDataSource` to use the `dataSource` property to get its data:
 
 ```swift
-func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+func numberOfSections(in tableView: UITableView) -> Int {
     return dataSource.numberOfSections
 }
 
-func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return dataSource.sections[section].numberOfRows
 }
 
-func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    let row = dataSource.rowAtIndexPath(indexPath)
+func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell { 
+    let row = dataSource.row(at: indexPath)
     
     return row.dequeueCellHandler!(row, tableView, indexPath)
 }
@@ -53,8 +53,8 @@ func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexP
 If you have setup any `didSelectHandler` then you will also need to implement the appropriate `UITableViewDelegate` method:
 
 ```swift
-func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-    let row = dataSource.rowAtIndexPath(indexPath)
+func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    let row = dataSource.row(at: indexPath)
     
     if let didSelectHandler = row.didSelectHandler {
         didSelectHandler(row, tableView, indexPath)
@@ -76,20 +76,20 @@ public var sectionIndexTitles: [String]
 
 public var selectedRows: [Row]
 
-public var empty: Bool
+public var isEmpty: Bool
 
 public subscript(index: Int) -> Section
 public subscript(indexPath: NSIndexPath) -> Row
  
-public func sectionAtIndex(index: Int) -> Section
+public func section(at index: Int) -> Section
 
-public func rowAtIndexPath(indexPath: NSIndexPath) -> Row
-public func cellAtIndexPath(indexPath: NSIndexPath) -> UITableViewCell?
-public func objectAtIndexPath(indexPath: NSIndexPath) -> AnyObject?
+public func row(at indexPath: NSIndexPath) -> Row
+public func cell(at indexPath: NSIndexPath) -> UITableViewCell?
+public func object(at indexPath: NSIndexPath) -> AnyObject?
 
-public func indexForSection(aSection: Section) -> Int?
-public func indexPathForRow(aRow: Row) -> NSIndexPath?
-public func indexPathForCell(cell: UITableViewCell) -> NSIndexPath?    
+public func index(for section: Section) -> Int?
+public func indexPath(for ow: Row) -> NSIndexPath?
+public func indexPath(for cell: UITableViewCell) -> NSIndexPath?    
 ```
 
 ## Section
@@ -108,27 +108,28 @@ public var headerView: UIView?
 public var footerView: UIView?
 
 public var numberOfRows: Int
-public var empty: Bool
+public var isEmpty: Bool
 public subscript(index: Int) -> Row 
 
 public convenience init(rows: [Row])
 public convenience init(objects: [AnyObject])
 public convenience init(cells: [UITableViewCell])
 
-public func addRow(row: Row)
-public func addCell(cell: UITableViewCell)
-public func addObject(object: AnyObject)
-public func removeRow(row: Row)
-public func removeCell(cell: UITableViewCell)
-public func removeObject(object: AnyObject)
+public func add(_ row: Row)
+public func add(_ cell: UITableViewCell)
+public func add(_ object: AnyObject)
 
-public func indexForRow(row: Row) -> Int?
-public func indexForCell(cell: UITableViewCell) -> Int?
+public func remove(_ row: Row)
+public func remove(_ cell: UITableViewCell)
+public func remove(_ object: AnyObject)
 
-public func indexForObject(object: AnyObject) -> Int?
-public func containsRow(row: Row) -> Bool
-public func containsCell(cell: UITableViewCell) -> Bool
-public func containsObject(object: AnyObject) -> Bool
+public func index(for row: Row) -> Int?
+public func index(for cell: UITableViewCell) -> Int?
+public func index(for object: AnyObject) -> Int?
+
+public func contains(_ row: Row) -> Bool
+public func contains(_ cell: UITableViewCell) -> Bool
+public func contains(_ object: AnyObject) -> Bool
 ```
 
 ## Row
@@ -156,7 +157,6 @@ public convenience init(object: AnyObject?)
 public convenience init(cell: UITableViewCell)
 ```
 
-
 ## Installation
 
 ### Carthage
@@ -165,4 +165,3 @@ public convenience init(cell: UITableViewCell)
   `github "ObjColumnist/StaticTableView"`
 2. Run `carthage update`
 3. Add the framework as described in [Carthage Readme](https://github.com/Carthage/Carthage#adding-frameworks-to-an-application)
-
