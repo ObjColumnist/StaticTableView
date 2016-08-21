@@ -4,7 +4,7 @@
 
 `StaticTableView` provides a simple API that allows you too quickly build up Static Table Views, while still giving you the ability to dynamically add or remove rows.
 
-StaticTableView has 3 core types `DataSource`, `Section` and `Row`.
+`StaticTableView` has 3 core types `DataSource`, `Section` and `Row`.
 
 A typical implementation would involve adding a `dataSource` property to your view controller:
 
@@ -62,100 +62,7 @@ func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 }
 ```
 
-Thats all there is to it, `DataSource`, `Section` and `Row` also have additional properties and methods to help with building static table views:
-
-## DataSource
-
-```swift
-public var sections: [Section] = []
-    
-public var numberOfSections: Int
-public var numberOfRows: Int
-
-public var sectionIndexTitles: [String]
-
-public var selectedRows: [Row]
-
-public var isEmpty: Bool
-
-public subscript(index: Int) -> Section
-public subscript(indexPath: NSIndexPath) -> Row
- 
-public func section(at index: Int) -> Section
-
-public func row(at indexPath: NSIndexPath) -> Row
-public func cell(at indexPath: NSIndexPath) -> UITableViewCell?
-public func object(at indexPath: NSIndexPath) -> AnyObject?
-
-public func index(for section: Section) -> Int?
-public func indexPath(for ow: Row) -> NSIndexPath?
-public func indexPath(for cell: UITableViewCell) -> NSIndexPath?    
-```
-
-## Section
-
-```swift
-public var rows: [Row]
-    
-public var headerHeight: CGFloat?
-public var footerHeight: CGFloat?
-
-public var headerTitle: String?
-public var footerTitle: String?
-public var indexTitle: String?
-
-public var headerView: UIView?
-public var footerView: UIView?
-
-public var numberOfRows: Int
-public var isEmpty: Bool
-public subscript(index: Int) -> Row 
-
-public convenience init(rows: [Row])
-public convenience init(objects: [AnyObject])
-public convenience init(cells: [UITableViewCell])
-
-public func add(_ row: Row)
-public func add(_ cell: UITableViewCell)
-public func add(_ object: AnyObject)
-
-public func remove(_ row: Row)
-public func remove(_ cell: UITableViewCell)
-public func remove(_ object: AnyObject)
-
-public func index(for row: Row) -> Int?
-public func index(for cell: UITableViewCell) -> Int?
-public func index(for object: AnyObject) -> Int?
-
-public func contains(_ row: Row) -> Bool
-public func contains(_ cell: UITableViewCell) -> Bool
-public func contains(_ object: AnyObject) -> Bool
-```
-
-## Row
-
-```swift
-public var cell: UITableViewCell?
-
-public var height: CGFloat?
-public var estimatedHeight: CGFloat?
-
-public var editActions: [UITableViewRowAction]?
-
-public var didSelectHandler: ((Row, UITableView, NSIndexPath) -> Void)?
-public var didDeselectHandler: ((Row, UITableView, NSIndexPath) -> Void)?
-
-public var didTapAccessoryButtonHandler: ((Row, UITableView, NSIndexPath) -> Void)?
-
-public var heightHandler: ((Row, UITableView, NSIndexPath) -> CGFloat)?
-
-public var editActionsHandler: ((Row, UITableView, NSIndexPath) -> [UITableViewRowAction]?)?
-
-public var dequeueCellHandler: ((Row, UITableView, NSIndexPath) -> UITableViewCell)?
-
-public convenience init(object: AnyObject?)
-public convenience init(cell: UITableViewCell)
-```
+Thats all there is to it, `DataSource`, `Section` and `Row` also have additional properties and methods to help with building Static Table Views.
 
 ## Installation
 
