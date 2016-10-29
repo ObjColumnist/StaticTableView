@@ -12,7 +12,7 @@ public protocol DataSourceProvider: UITableViewDataSource, UITableViewDelegate {
     func dataSource(for tableView: UITableView) -> DataSource
 }
 
-public extension DataSourceProvider {
+public extension DataSourceProvider where Self: NSObject {
     // MARK: - UITableViewDataSource
     
     public func numberOfSections(in tableView: UITableView) -> Int {
